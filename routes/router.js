@@ -8,9 +8,9 @@ express.use('/load', require('./api/load'));
 express.use('/auth', require('./api/auth'));
 
 // Crypto routes
-express.use('/crypto',middleware.ensureAuthenticated, require('./api/crypto'));
+express.use('/currency', require('./api/crypto'));
 
 // User routes
-express.use('/user',middleware.ensureAuthenticated, require('./api/users'));
+express.use('/profile',middleware.ensureAuthenticated, require('./api/users'));
 
 module.exports = express;

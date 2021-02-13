@@ -30,7 +30,7 @@ router.route('/').get((req, res) => {
                 newCrypto.id = index;
                 newCrypto.name = content[index].name;
                 newCrypto.symbol = content[index].symbol;
-                newCrypto.price = Math.random()*10;
+                newCrypto.price = Math.random()*10; //price is a random number, not real
                 cryptos.push(newCrypto);
             }
             Crypto.create(cryptos).then(() => {

@@ -89,7 +89,6 @@ router.route('/signup').post((req, res) => {
                             const newCryptoUser = new CryptoUser()
                             newCryptoUser.cryptoId = fav_crypto;
                             newCryptoUser.userId = user._id;
-                            newCryptoUser.quantity = 0;
                             newCryptoUser.save().then(() => {
                                 res.json({
                                     success: true,
