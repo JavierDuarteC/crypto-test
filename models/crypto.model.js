@@ -16,7 +16,7 @@ const cryptoSchema = new Schema(
             type: String,
             required: true
         },
-        source:{
+        symbol:{
             type: String,
             required: true
         }

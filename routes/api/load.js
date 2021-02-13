@@ -10,7 +10,7 @@ router.route('/').get((req, res) => {
         "port": null,
         "path": "/asset?status=ACTIVE&type=CRYPTO",
         "headers": {
-            "x-rapidapi-key": "d89074f7admsh13cf1be25abc07ap18c247jsnb4f298baab67",
+            "x-rapidapi-key": "d89074f7admsh13cf1be25abc07ap18c247jsnb4f298baab67",//todo remove this token
             "x-rapidapi-host": "bravenewcoin.p.rapidapi.com",
             "useQueryString": false
         }
@@ -23,10 +23,23 @@ router.route('/').get((req, res) => {
         });
         responseBNC.on("end", function () {
             const body = Buffer.concat(chunks);
-            console.log(body.toString());
-            return res.json({
-                success: true,
-                message: 'Database loaded!'
+            const content = JSON.parse(body.toString()).content;
+            let cryptos = [];
+            for (var index in content) {
+                const newCrypto = new Crypto();
+                newCrypto.id = index;
+                newCrypto.name = content[index].name;
+                newCrypto.symbol = content[index].symbol;
+                newCrypto.price = Math.random()*10;
+                cryptos.push(newCrypto);
+            }
+            Crypto.create(cryptos).then(() => {
+                return res.send({ success: true, message: "Crypto loaded to DB" });
+            }).catch(err => {
+                return res.send({
+                    success: false,
+                    message: "Error: Could not add crypto to DB "+err
+                });
             });
         });
     });

@@ -1,48 +1,176 @@
 const router = require('express').Router()
 const User = require('../../controllers/usersController')
-const UserSession = require('../../controllers/userSessionController')
+const Crypto = require('../../controllers/cryptoController');
+const CryptoUser = require('../../controllers/cryptoUserController');
 
-router.route('/').get((req, res) => {
+router.route('/myprofile').get((req, res) => {
     var token = req.headers.authorization.split(" ")[1];
-    if (token) {
-        console.log(token);
-    } else {
-        return res.sendStatus(403).json('Authentication error.');
-    }
-    UserSession.findById(token)
-        .then((session) => {
-            if (session) {
-                console.log(session);
-            } else {
+
+    User.findOne({
+        token: token
+    })
+        .then((user) => {
+            if (!user) {
                 return res.send({
                     success: false,
-                    message: 'Error: Invalid Token.'
+                    message: 'Error: Invalid token.'
                 })
             }
-            User.findOne({
-                _id: session.userId
+            Crypto.findOne({
+                id: user.fav_crypto
             })
-                .then((user) => {
-                    if (user) {
-                        console.log(user);
-                    } else {
-                        return res.send({
+                .then(crypto => {
+                    if (!crypto) {
+                        res.json({
                             success: false,
-                            message: 'Error: Invalid User.'
+                            message: 'Error: Favorite cryptocurrency not found'
                         })
                     }
+                    crypto = crypto.toJSON();
+                    delete crypto._id;
+                    delete crypto.__v;
+                    delete crypto.createdAt;
+                    delete crypto.updatedAt;
                     return res.json({
                         username: user.username,
                         name: user.name,
                         lastname: user.lastname,
-                        // todo add fav_crypto: user.favcrypto
+                        fav_crypto: crypto
                     });
-                }).catch(err1 => {
-                    return res.status(400).json('Error: ' + err1);
+                })
+                .catch(err => res.status(500).json('Error: ' + err));
+
+        }).catch(err => {
+            return res.status(400).json('Error: ' + err);
+        });
+});
+
+router.route('/mycrypto').get((req, res) => {
+    var token = req.headers.authorization.split(" ")[1];
+
+    User.findOne({
+        token: token
+    })
+        .then((user) => {
+            if (!user) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Invalid token.'
+                })
+            }
+
+            CryptoUser.find({
+                userId: user._id
+            })
+                .then(async cryptoUsers => {
+                    if (cryptoUsers.length === 0) {
+                        return res.json({
+                            success: false,
+                            message: 'Error: No cryptocurrencies associated to your account'
+                        })
+                    }
+
+                    var cryptos = [];
+                    try {
+                        await asyncForEach(cryptoUsers, async (cryptoUser) => {
+                            try {
+                                var crypto = await Crypto.findOne({
+                                    id: cryptoUser.cryptoId
+                                });
+                                if (!crypto) {
+                                    return res.json({
+                                        success: false,
+                                        message: 'Error: Cryptocurrency not found'
+                                    })
+                                }
+                                crypto = crypto.toJSON();
+                                delete crypto._id;
+                                delete crypto.__v;
+                                delete crypto.createdAt;
+                                delete crypto.updatedAt;
+                                cryptos.push(crypto);
+
+                            } catch (err) {
+                                return res.status(500).json('Error: ' + err)
+                            }
+                        });
+
+                        return res.json(cryptos);
+
+                    } catch (err) {
+                        return res.status(500).json('Error: ' + err)
+                    }
+                })
+                .catch(err => {
+                    return res.status(500).json('Error: ' + err)
                 });
         }).catch(err => {
             return res.status(400).json('Error: ' + err);
         });
 });
+
+router.route('/add/mycrypto').post((req, res) => {
+    var token = req.headers.authorization.split(" ")[1];
+    const { body } = req
+    let {
+        id,
+        quantity
+    } = body
+
+    if (!id) {
+        return res.send({
+            success: false,
+            message: 'Error: crypto ID cannot be blank.'
+        })
+    }
+
+    if (!quantity) {
+        return res.send({
+            success: false,
+            message: 'Error: Quantity cannot be blank.'
+        })
+    }
+
+    username = username.toLowerCase()
+
+    User.findOne({
+        username: username
+    })
+        .then((user) => {
+            //invalid credentials
+            if (!user) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Invalid token.'
+                })
+            }
+
+            CryptoUser.findOne({
+                userId: user._id,
+                cryptoId: id
+            })
+                .then(async cryptoUser => {
+                    if (cryptoUser) {
+                        
+
+                    }else{
+                        console.log("No crypto associated to this account");
+                    }
+
+                })
+                .catch(err => {
+                    return res.status(500).json('Error: ' + err)
+                });
+
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+
+})
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+    }
+}
 
 module.exports = router

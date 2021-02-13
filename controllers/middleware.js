@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken');
+const config = require('../configs/config');
+
 exports.ensureAuthenticated = function (req, res, next) {
     if (!req.headers.authorization) {
         return res
@@ -10,7 +13,20 @@ exports.ensureAuthenticated = function (req, res, next) {
 
     var token = req.headers.authorization.split(" ")[1];
 
-    if (!token) {
+    if (token) {
+        jwt.verify(token, config.key, (err, decoded) => {
+            if (err) {
+                return res.status(403)
+                    .send({
+                        success: false,
+                        message: 'Error: Auth token invalid.'
+                    });
+            } else {
+                req.decoded = decoded;
+                console.log(decoded);
+            }
+        });
+    } else {
         return res
             .status(401)
             .send({

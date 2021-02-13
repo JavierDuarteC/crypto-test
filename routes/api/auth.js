@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const User = require('../../controllers/usersController');
-const UserSession = require('../../controllers/userSessionController');
 const Crypto = require('../../controllers/cryptoController');
+const CryptoUser = require('../../controllers/cryptoUserController');
+const jwt = require('jsonwebtoken');
+const config = require('../../configs/config');
 
 router.route('/signup').post((req, res) => {
     const { body } = req
@@ -55,48 +57,56 @@ router.route('/signup').post((req, res) => {
         id: fav_crypto
     })
         .then(crypto => {
-            if (crypto) {
-                console.log(crypto);
-            } else {
+            if (!crypto) {
                 res.json({
                     success: false,
                     message: 'Error: Favorite cryptocurrency not found'
                 })
             }
+
+            username = username.toLowerCase();
+            //Find users with the same username
+            User.findOne({
+                username: username
+            })
+                .then(previusUser => {
+                    if (previusUser) {
+                        return res.send({
+                            success: false,
+                            message: 'Error: Account already exists.'
+                        })
+                    }
+
+                    //Save new user
+                    const newUser = new User();
+                    newUser.username = username;
+                    newUser.password = newUser.generateHash(password);
+                    newUser.name = name;
+                    newUser.lastname = lastname;
+                    newUser.fav_crypto = fav_crypto;
+                    newUser.save()
+                        .then((user) => {
+                            const newCryptoUser = new CryptoUser()
+                            newCryptoUser.cryptoId = fav_crypto;
+                            newCryptoUser.userId = user._id;
+                            newCryptoUser.quantity = 0;
+                            newCryptoUser.save().then(() => {
+                                res.json({
+                                    success: true,
+                                    message: 'User registered with their favorite cryptocurrency!'
+                                });
+                            })
+                                .catch(err => res.status(400).json('Error: ' + err));
+                        })
+                        .catch(err => res.status(400).json('Error: ' + err))
+                })
+                .catch(err => res.status(400).json('Error: ' + err));
         })
         .catch(err => res.status(500).json('Error: ' + err));
 
-    username = username.toLowerCase();
-    //Find users with the same username
-    User.findOne({
-        username: username
-    })
-        .then(previusUser => {
-            if (previusUser) {
-                return res.send({
-                    success: false,
-                    message: 'Error: Account already exists.'
-                })
-            }
-            //Save new user
-            const newUser = new User()
-            newUser.username = username
-            newUser.password = newUser.generateHash(password)
-            newUser.name = name;
-            newUser.lastname = lastname;
-            newUser.fav_crypto = fav_crypto;
-            newUser.save()
-                .then(() => res.json({
-                    success: true,
-                    message: 'User added!'
-                }))
-                .catch(err => res.status(400).json('Error: ' + err))
-        })
-        .catch(err => res.status(400).json('Error: ' + err));
-
 })
 
-router.route('/signin').post((req, res) => {
+router.route('/login').post((req, res) => {
     const { body } = req
     let {
         username,
@@ -119,19 +129,18 @@ router.route('/signin').post((req, res) => {
 
     username = username.toLowerCase()
 
-    User.find({
+    User.findOne({
         username: username
     })
-        .then((users) => {
+        .then((user) => {
             //invalid credentials
-            if (users.length != 1) {
+            if (!user) {
                 return res.send({
                     success: false,
                     message: 'Error: Invalid username.'
                 })
             }
 
-            const user = users[0]
             if (!user.validPassword(password)) {
                 return res.send({
                     success: false,
@@ -139,135 +148,34 @@ router.route('/signin').post((req, res) => {
                 })
             }
 
+            const payload = {
+                check: true
+            };
+            const token = jwt.sign(payload, config.key, {
+                expiresIn: 1440
+            });
+
             //valid credentials
-            UserSession.find({
-                userId: user._id
+            user.token = token;
+            user.save().then(() => {
+                res.json({
+                    success: true,
+                    message: 'User logged in!',
+                    token: token
+                });
             })
-                .then((sessions) => {
-                    if (sessions.length > 1) {
-                        return res.send({
-                            success: false,
-                            message: 'Error: Invalid Session.'
-                        })
-                    } else if (sessions.length == 1) {
-                        return res.send({
-                            success: true,
-                            message: 'Valid sign in.',
-                            token: sessions[0]._id
-                        })
-                    } else {
-                        const userSession = new UserSession()
-                        userSession.userId = user._id
-                        userSession.save()
-                            .then((newSession) => {
-                                return res.send({
-                                    success: true,
-                                    message: 'Valid sign in.',
-                                    token: newSession._id
-                                })
-                            })
-                            .catch(err => res.status(400).json('Error: ' + err))
-                    }
-                })
-                .catch(err => res.status(400).json('Error: ' + err))
+                .catch(err => res.status(400).json('Error: ' + err));
 
         })
-        .catch(err => res.status(400).json('Error: ' + err))
+        .catch(err => res.status(400).json('Error: ' + err));
 
-})
-
-router.route('/username').get((req, res) => {
-    const { query } = req
-    const { token } = query
-
-    if (!token) {
-        return res.send({
-            success: false,
-            message: 'Error: token cannot be blank.'
-        })
-    }
-
-    UserSession.find({
-        _id: token,
-        isDeleted: false
-    })
-        .then((sessions) => {
-            if (sessions.length != 1) {
-                return res.send({
-                    success: false,
-                    message: 'Error: Invalid Token.'
-                })
-            }
-            const session = sessions[0]
-            User.find({
-                _id: session.userId
-            })
-                .then((users) => {
-                    //invalid credentials
-                    if (users.length != 1) {
-                        return res.send({
-                            success: false,
-                            message: 'Error: Invalid session user ID.'
-                        })
-                    }
-                    const user = users[0]
-                    return res.send({
-                        success: true,
-                        message: 'Username found.',
-                        username: user.username
-                    })
-
-                })
-                .catch(err => res.status(400).json('Error: ' + err))
-
-        })
-        .catch(err => res.status(400).json('Error: ' + err))
-
-})
-
-router.route('/verify').get((req, res) => {
-    const { query } = req
-    const { token } = query
-
-    UserSession.find({
-        _id: token,
-        isDeleted: false
-    })
-        .then((sessions) => {
-            if (sessions.length != 1) {
-                return res.send({
-                    success: false,
-                    message: 'Error: Invalid Token.'
-                })
-            }
-
-            return res.send({
-                success: true,
-                message: 'Token is good.'
-            })
-        })
-        .catch(err => res.status(400).json('Error: ' + err))
 })
 
 router.route('/logout').get((req, res) => {
     const { query } = req
     const { token } = query
 
-    UserSession.findOneAndUpdate({
-        _id: token,
-        isDeleted: false
-    }, {
-        $set: {
-            isDeleted: true
-        },
-    })
-        .then(() => {
-            return res.send({
-                success: true,
-                message: 'Session closed.'
-            })
-        })
-        .catch(err => res.status(400).json('Error: ' + err))
+    //todo find user by token and delete from db
 })
 
 module.exports = router

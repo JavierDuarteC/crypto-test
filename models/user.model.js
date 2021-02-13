@@ -21,7 +21,6 @@ const userSchema = new Schema({
     lastname: {
         type: String,
         required: true,
-        unique: true,
         trim: true,
         minlength: 2
     },
@@ -36,6 +35,10 @@ const userSchema = new Schema({
         required: true,
         default: -1
     },
+    token: {
+        type: String,
+        default:""
+    }
 }, {
         timestamps: true
     }
