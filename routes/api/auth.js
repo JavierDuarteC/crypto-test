@@ -21,7 +21,14 @@ router.route('/signup').post((req, res) => {
             message: 'Error: Username cannot be blank.'
         });
     }
-    if (!password) {
+    if (password) {
+        if (!password.match(/^(?=.*[0-9])(?=.*[a-z])([a-zA-Z0-9]{8})$/)) {
+            return res.send({
+                success: false,
+                message: 'Error: Password has to contain at least 8 characters and at least 1 number.'
+            });
+        }
+    } else {
         return res.send({
             success: false,
             message: 'Error: Password cannot be blank.'
