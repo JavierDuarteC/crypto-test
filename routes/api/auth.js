@@ -2,6 +2,7 @@ const router = require('express').Router();
 const User = require('../../controllers/usersController');
 const Crypto = require('../../controllers/cryptoController');
 const CryptoUser = require('../../controllers/cryptoUserController');
+const Utils = require('../../configs/utils');
 const jwt = require('jsonwebtoken');
 const config = require('../../configs/config');
 
@@ -22,7 +23,7 @@ router.route('/signup').post((req, res) => {
         });
     }
     if (password) {
-        if (!password.match(/^(?=.*[0-9])(?=.*[a-z])([a-zA-Z0-9]{8})$/)) {
+        if (!password.match(/^(?=.*[0-9])(?=.*[a-z])([a-zA-Z0-9]{8,})$/)) {
             return res.send({
                 success: false,
                 message: 'Error: Password has to contain at least 8 characters and at least 1 number.'
@@ -53,7 +54,7 @@ router.route('/signup').post((req, res) => {
         });
     }
     //Verify user's fav_crypto
-    if (typeof fav_crypto !== 'number') {
+    if (!Utils.isNumeric(fav_crypto)) {
         return res.send({
             success: false,
             message: 'Error: Favorite cryptocurrency should be numeric.'
@@ -92,19 +93,19 @@ router.route('/signup').post((req, res) => {
                     newUser.lastname = lastname;
                     newUser.fav_crypto = fav_crypto;
                     newUser.save()
-                        .then((user) => {
+                        .then(user => {
                             const newCryptoUser = new CryptoUser()
                             newCryptoUser.cryptoId = fav_crypto;
                             newCryptoUser.userId = user._id;
                             newCryptoUser.save().then(() => {
-                                res.json({
+                                res.status(201).json({
                                     success: true,
                                     message: 'User registered with their favorite cryptocurrency!'
                                 });
                             })
-                                .catch(err => res.status(400).json('Error: ' + err));
+                                .catch(err => res.status(500).json('Error: ' + err));
                         })
-                        .catch(err => res.status(400).json('Error: ' + err))
+                        .catch(err => res.status(500).json('Error: ' + err))
                 })
                 .catch(err => res.status(400).json('Error: ' + err));
         })

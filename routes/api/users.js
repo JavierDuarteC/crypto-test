@@ -126,9 +126,14 @@ router.route('/add/mycrypto').post((req, res) => {
             success: false,
             message: 'Error: crypto ID cannot be blank.'
         })
+    } else if (!Utils.isNumeric(id)) {
+        return res.send({
+            success: false,
+            message: 'Error: Crypto ID has to be numeric.'
+        })
     }
     if (quantity) {
-        if (typeof quantity !== 'number') {
+        if (!Utils.isNumeric(quantity)) {
             return res.send({
                 success: false,
                 message: 'Error: Quantity has to be numeric.'

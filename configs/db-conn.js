@@ -10,14 +10,12 @@ const config = {
 };
 
 mongoose.connect(db_path, config, error => {
-    if(error){
-        console.log('Error connectiong to database: '+error);
-    }else{
-        console.log('Mongo is connected');
+    if (error) {
+        console.log('Error connectiong to database: ' + error);
     }
 });
 
 const connection = mongoose.connection
-connection.once('open',()=>{
+connection.once('open', () => {
     console.log('MongoDB database connection established successfully')
 })
