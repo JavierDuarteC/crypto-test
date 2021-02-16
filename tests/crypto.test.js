@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Crypto = require('../controllers/cryptoController');
-const databaseName = 'test'
+const databaseName = 'cryptocurrency-test'
 
 beforeAll(async () => {
     const url = `mongodb://127.0.0.1/${databaseName}`
@@ -23,7 +23,7 @@ describe('Crypto table DB', function () {
 
         const crypto = new Crypto(dummieCrypto);
         const ret = await crypto.save();
-        
+
         expect(ret.name).toBeTruthy();
         expect(ret.symbol).toBeTruthy();
         expect(ret.price).toBeTruthy();

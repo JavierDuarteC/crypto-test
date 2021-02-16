@@ -23,6 +23,7 @@ router.route('/:id').get((req, res) => {
             crypto = crypto.toJSON();
             delete crypto._id;
             delete crypto.__v;
+            delete crypto.id;
             delete crypto.createdAt;
             delete crypto.updatedAt;
             return res.json(crypto)

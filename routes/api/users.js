@@ -55,7 +55,7 @@ router.route('/mycrypto').get((req, res) => {
     })
         .then((user) => {
             if (!user) {
-                return res.send({
+                return res.status(401).send({
                     success: false,
                     message: 'Error: Invalid token.'
                 })
@@ -66,7 +66,7 @@ router.route('/mycrypto').get((req, res) => {
             })
                 .then(async cryptoUsers => {
                     if (cryptoUsers.length === 0) {
-                        return res.json({
+                        return res.status(500).json({
                             success: false,
                             message: 'Error: No cryptocurrencies associated with your account'
                         })
@@ -80,7 +80,7 @@ router.route('/mycrypto').get((req, res) => {
                                     id: cryptoUser.cryptoId
                                 });
                                 if (!crypto) {
-                                    return res.json({
+                                    return res.status(500).json({
                                         success: false,
                                         message: 'Error: Cryptocurrency not found'
                                     })
@@ -95,25 +95,37 @@ router.route('/mycrypto').get((req, res) => {
                                 cryptos.push(crypto);
 
                             } catch (err) {
-                                return res.status(500).json('Error: ' + err)
+                                return res.status(500).json({
+                                    success: false,
+                                    message: 'Error: ' + err
+                                })
                             }
                         });
 
                         return res.json(cryptos);
 
                     } catch (err) {
-                        return res.status(500).json('Error: ' + err)
+                        return res.status(500).json({
+                            success: false,
+                            message: 'Error: ' + err
+                        })
                     }
                 })
                 .catch(err => {
-                    return res.status(500).json('Error: ' + err)
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error: ' + err
+                    })
                 });
         }).catch(err => {
-            return res.status(400).json('Error: ' + err);
+            return res.status(500).json({
+                success: false,
+                message: 'Error: ' + err
+            });
         });
 });
 
-router.route('/add/mycrypto').post((req, res) => {
+router.route('/add').post((req, res) => {
     var token = req.headers.authorization.split(" ")[1];
     const { body } = req
     let {
@@ -122,19 +134,19 @@ router.route('/add/mycrypto').post((req, res) => {
     } = body
 
     if (!id) {
-        return res.send({
+        return res.status(400).json({
             success: false,
             message: 'Error: crypto ID cannot be blank.'
         })
     } else if (!Utils.isNumeric(id)) {
-        return res.send({
+        return res.status(400).json({
             success: false,
             message: 'Error: Crypto ID has to be numeric.'
         })
     }
     if (quantity) {
         if (!Utils.isNumeric(quantity)) {
-            return res.send({
+            return res.status(400).json({
                 success: false,
                 message: 'Error: Quantity has to be numeric.'
             })
@@ -147,7 +159,7 @@ router.route('/add/mycrypto').post((req, res) => {
         .then((user) => {
             //invalid credentials
             if (!user) {
-                return res.send({
+                return res.status(401).json({
                     success: false,
                     message: 'Error: Invalid token.'
                 })
@@ -172,7 +184,10 @@ router.route('/add/mycrypto').post((req, res) => {
                                 message: 'User associated with a cryptocurrency!'
                             });
                         })
-                            .catch(err => res.status(400).json('Error: ' + err));
+                            .catch(err => res.status(500).json({
+                                success: false,
+                                message: 'Error: ' + err
+                            }));
                     } else {
                         //change quantity
                         if (quantity) {
@@ -183,7 +198,10 @@ router.route('/add/mycrypto').post((req, res) => {
                                     message: 'User updated their cryptocurrency quantity!'
                                 });
                             })
-                                .catch(err => res.status(400).json('Error: ' + err));
+                                .catch(err => res.status(500).json({
+                                    success: false,
+                                    message: 'Error: ' + err
+                                }));
                         } else {
                             return res.json({
                                 success: false,
@@ -193,11 +211,17 @@ router.route('/add/mycrypto').post((req, res) => {
                     }
                 })
                 .catch(err => {
-                    return res.status(500).json('Error: ' + err)
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Error: ' + err
+                    })
                 });
 
         })
-        .catch(err => res.status(400).json('Error: ' + err));
+        .catch(err => res.status(500).json({
+            success: false,
+            message: 'Error: ' + err
+        }));
 
 })
 
@@ -215,7 +239,7 @@ router.route('/:user').get((req, res) => {
     })
         .then((user) => {
             if (!user) {
-                return res.send({
+                return res.status(401).json({
                     success: false,
                     message: 'Error: Invalid token.'
                 })
@@ -225,7 +249,7 @@ router.route('/:user').get((req, res) => {
             })
                 .then(mycrypto => {
                     if (!mycrypto) {
-                        res.json({
+                        res.status(500).json({
                             success: false,
                             message: 'Error: Favorite cryptocurrency not found'
                         })
@@ -236,7 +260,7 @@ router.route('/:user').get((req, res) => {
                     })
                         .then((userFound) => {
                             if (!userFound) {
-                                return res.send({
+                                return res.status(400).json({
                                     success: false,
                                     message: 'Error: Invalid username.'
                                 })
@@ -246,7 +270,7 @@ router.route('/:user').get((req, res) => {
                             }).sort({ price: order }).limit(3)
                                 .then(async cryptoUsers => {
                                     if (cryptoUsers.length === 0) {
-                                        return res.json({
+                                        return res.status(500).json({
                                             success: false,
                                             message: 'Error: No cryptocurrencies associated with this account'
                                         })
@@ -260,7 +284,7 @@ router.route('/:user').get((req, res) => {
                                                     id: cryptoUser.cryptoId
                                                 });
                                                 if (!crypto) {
-                                                    return res.json({
+                                                    return res.status(500).json({
                                                         success: false,
                                                         message: 'Error: Cryptocurrency not found'
                                                     })
@@ -275,27 +299,45 @@ router.route('/:user').get((req, res) => {
                                                 cryptos.push(crypto);
 
                                             } catch (err) {
-                                                return res.status(500).json('Error: ' + err)
+                                                return res.status(500).json({
+                                                    success: false,
+                                                    message: 'Error: ' + err
+                                                });
                                             }
                                         });
 
-                                        return res.json({ currencies: cryptos });
+                                        return res.json(cryptos);
 
                                     } catch (err) {
-                                        return res.status(500).json('Error: ' + err)
+                                        return res.status(500).json({
+                                            success: false,
+                                            message: 'Error: ' + err
+                                        })
                                     }
                                 })
                                 .catch(err => {
-                                    return res.status(500).json('Error: ' + err)
+                                    return res.status(500).json({
+                                        success: false,
+                                        message: 'Error: ' + err
+                                    })
                                 });
                         }).catch(err => {
-                            return res.status(400).json('Error: ' + err);
+                            return res.status(404).json({
+                                success: false,
+                                message: 'Error: ' + err
+                            });
                         });
 
                 })
-                .catch(err => res.status(500).json('Error: ' + err));
+                .catch(err => res.status(500).json({
+                    success: false,
+                    message: 'Error: ' + err
+                }));
         }).catch(err => {
-            return res.status(400).json('Error: ' + err);
+            return res.status(500).json({
+                success: false,
+                message: 'Error: ' + err
+            });
         });
 });
 

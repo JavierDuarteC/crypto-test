@@ -16,10 +16,10 @@ exports.ensureAuthenticated = function (req, res, next) {
     if (token) {
         jwt.verify(token, config.key, (err, decoded) => {
             if (err) {
-                return res.status(403)
+                return res.status(401)
                     .send({
                         success: false,
-                        message: 'Error: Auth token invalid.'
+                        message: 'Error: Invalid Auth token.'
                     });
             } else {
                 req.decoded = decoded;

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Crypto = require('../controllers/cryptoController');
 const User = require('../controllers/usersController');
 const CryptoUser = require('../controllers/cryptoUserController');
-const databaseName = 'test';
+const databaseName = 'cryptouser-test';
 
 beforeAll(async () => {
     const url = `mongodb://127.0.0.1/${databaseName}`

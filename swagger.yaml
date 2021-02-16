@@ -1,0 +1,400 @@
+openapi: 3.0.0
+servers:
+  - description: Localhost dev server
+    url: localhost:5000
+info:
+  description: This is a simple API for full stack testing
+  version: "1.0.0"
+  title: Simple Cryptocurrency App
+  contact:
+    email: javierandresduarte@gmail.com
+tags:
+  - name: developers
+    description: Operations available to regular developers
+  - name: general
+    description: Set the environment
+    
+paths:
+  /api/load:
+      get:
+        description: Fill our database with cryptocurrency information from BraveNewCoin
+        tags: 
+          - general
+        responses:
+          200:
+            description: Status of cryptocurrency load to database
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BasicResponse'
+                  
+  /api/currency/{id}:
+      get:
+        description: Fill our database with cryptocurrency information from BraveNewCoin
+        tags: 
+          - developers
+        parameters:
+          - name: id
+            required: true
+            in: path
+            description: Cryptocurrency ID to find
+            schema:
+              type: integer
+              example: 2
+        responses:
+          200:
+            description: Crypto currency information
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Crypto'
+          400:
+            description: Crypto currency not found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BasicResponse'
+  /api/auth/signup:
+    post:
+      description: To register one user and create an account
+      tags: 
+          - developers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+      responses:
+        201:
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        200:
+          description: Error creating this account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        400:
+          description: Request body data faulty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        500:
+          description: Server error saving user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+  /api/auth/login:
+    post:
+      description: For Users to start a session
+      tags: 
+          - developers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        200:
+          description: User session successfuly started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponseToken'
+        400:
+          description: Request body data faulty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+                
+  /api/profile/{username}:
+    get:
+      description: Get a list of the top cryptocurrencies from the referred username
+      tags: 
+        - developers
+      parameters:
+        - name: username
+          required: true
+          in: path
+          description: Username to find top cryptos
+          schema:
+            type: string
+            example: javierduartec
+        - name: asc
+          required: false
+          in: query
+          description: Config variable for ordering results
+          schema:
+            type: boolean
+            example: true
+      responses:
+        200:
+          description: Top cryptocurrencies of this user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopCrypto'
+        401:
+          description: Invalid token, no auth token ofund
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+  /api/profile/mycrypto:
+    get:
+      description: Get a list of my cryptocurrencies
+      tags: 
+        - developers
+      responses:
+        200:
+          description: Cryptocurrencies of this logged user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Crypto'
+        401:
+          description: Invalid token, no auth token found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+  /api/profile/me:
+    get:
+      description: Get logged user's profile
+      tags: 
+        - developers
+      responses:
+        200:
+          description: Cryptocurrencies of this logged user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        401:
+          description: Invalid token, no auth token found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+  /api/profile/add:
+    post:
+      description: For Users to add cryptocurrencies to their profile
+      tags: 
+          - developers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - id
+              properties:
+                id:
+                  description: Cryptocurrency ID to associate 
+                  type: integer
+                  example: 36
+                quantity:
+                  description: Add an amount of this cryptocurrency to User's profile
+                  type: integer
+                  example: 36
+      responses:
+        200:
+          description: User associated with cryptocurrency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        401:
+          description: Invalid token, no auth token found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        400:
+          description: Request body data faulty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse' 
+                   
+components:
+  schemas:
+    UserRegister:
+      type: object
+      required: 
+        - name
+        - lastname
+        - username
+        - password
+        - fav_crypto
+      properties:
+        name:
+          type: string
+          example: Javier
+        lastname:
+          type: string
+          example: Duarte
+        username:
+          description: Username is unique, if this user is already taken it won't create the account
+          type: string
+          example: JavierDuarteC
+        password:
+          description: Password has to have at least 8 chars in total. At least 1 capital, at least 1 lower case, at least 1 number
+          type: string
+          example: 1234Abcd
+        fav_crypto:
+          description: Favorite crypto ID
+          type: integer
+          example: 12 
+    UserLogin:
+      type: object
+      required: 
+        - username
+        - password
+      properties:
+        username:
+          description: Username is unique, if this user is already taken it won't create the account
+          type: string
+          example: JavierDuarteC
+        password:
+          description: Password has to have at least 8 chars in total. At least 1 capital, at least 1 lower case, at least 1 number
+          type: string
+          example: 1234Abcd
+    UserProfile:
+      type: object
+      required: 
+        - name
+        - lastname
+        - username
+        - fav_crypto
+      properties:
+        name:
+          type: string
+          example: Javier
+        lastname:
+          type: string
+          example: Duarte
+        username:
+          description: Username is unique, if this user is already taken it won't create the account
+          type: string
+          example: JavierDuarteC
+        fav_crypto:
+          $ref: '#/components/schemas/Crypto'
+    BasicResponseToken:
+      type: object
+      required:
+        - success
+        - message
+        - token
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: User logged in
+        token:
+          type: string
+          example: sdasDAifngHLHth-342noefsDFSfd
+    BasicResponse:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Your query was executed
+    TopCrypto:
+      type: object
+      required:
+        - name
+        - symbol
+        - price
+        - price_mycrypto
+      properties:
+        name:
+          type: string
+          example: Bitcoin
+        symbol:
+          type: string
+          example: BTC
+        price:
+          type: number
+          example: 156.001
+        price_mycrypto:
+          type: number
+          example: 156.001
+    Crypto:
+      type: object
+      required:
+        - name
+        - symbol
+        - price
+      properties:
+        name:
+          type: string
+          example: Bitcoin
+        symbol:
+          type: string
+          example: BTC
+        price:
+          type: number
+          example: 156.001

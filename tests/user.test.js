@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../controllers/usersController');
-const databaseName = 'test'
+const databaseName = 'user-test'
 
 beforeAll(async () => {
     const url = `mongodb://localhost/${databaseName}`

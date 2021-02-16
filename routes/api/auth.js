@@ -103,13 +103,25 @@ router.route('/signup').post((req, res) => {
                                     message: 'User registered with their favorite cryptocurrency!'
                                 });
                             })
-                                .catch(err => res.status(500).json('Error: ' + err));
+                                .catch(err => res.status(500).json({
+                                    success: false,
+                                    message: 'Error: ' + err
+                                }));
                         })
-                        .catch(err => res.status(500).json('Error: ' + err))
+                        .catch(err => res.status(500).json({
+                            success: false,
+                            message: 'Error: ' + err
+                        }))
                 })
-                .catch(err => res.status(400).json('Error: ' + err));
+                .catch(err => res.status(400).json({
+                    success: false,
+                    message: 'Error: ' + err
+                }));
         })
-        .catch(err => res.status(500).json('Error: ' + err));
+        .catch(err => res.status(400).json({
+            success: false,
+            message: 'Error: ' + err
+        }));
 
 })
 
@@ -142,14 +154,14 @@ router.route('/login').post((req, res) => {
         .then((user) => {
             //invalid credentials
             if (!user) {
-                return res.send({
+                return res.status(400).send({
                     success: false,
                     message: 'Error: Invalid username.'
                 })
             }
 
             if (!user.validPassword(password)) {
-                return res.send({
+                return res.status(400).send({
                     success: false,
                     message: 'Error: Invalid password.'
                 })
@@ -171,18 +183,24 @@ router.route('/login').post((req, res) => {
                     token: token
                 });
             })
-                .catch(err => res.status(400).json('Error: ' + err));
+                .catch(err => res.status(400).json({
+                    success: false,
+                    message: 'Error: ' + err
+                }));
 
         })
-        .catch(err => res.status(400).json('Error: ' + err));
+        .catch(err => res.status(400).json({
+            success: false,
+            message: 'Error: ' + err
+        }));
 
 })
 
-router.route('/logout').get((req, res) => {
-    const { query } = req
-    const { token } = query
+// router.route('/logout').get((req, res) => {
+//     const { query } = req
+//     const { token } = query
 
-    //todo find user by token and delete from db
-})
+//     //todo find user by token and delete from db
+// })
 
 module.exports = router
