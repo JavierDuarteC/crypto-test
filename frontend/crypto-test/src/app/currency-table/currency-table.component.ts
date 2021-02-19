@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { bncApiService } from '../services/bnc.service';
+import { Currency } from '../classes/currency';
 
 export interface PeriodicElement {
   name: string,
@@ -27,11 +29,32 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class CurrencyTableComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'price', 'isCrypto', 'convert'];
-  dataSource = ELEMENT_DATA;
+  dataSource: Currency[] = [];
+  from = 0;
+  to = 0;
+  limit = 0;
 
-  constructor() { }
+  constructor(private _bncApiService: bncApiService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this._bncApiService.setToken();
+    var currenciesData = (await this._bncApiService.getCurrencies().toPromise()).content;
+    this.limit = currenciesData.length;
+    if (this.limit > 0 && this.limit < 21) {
+      this.to = this.limit;
+    } else if (this.limit > 0 && this.limit > 20) {
+      this.to = 20;
+    }
+    for (let i = this.from; i < this.to; i++) {
+      var data = await this._bncApiService.getPrice(currenciesData[i].id).toPromise();
+      //console.log(data);
+      if ("content" in data) {
+        if (data.content.length > 0) {
+          currenciesData[i].price = data.content[0].price;
+        }
+      }
+      this.dataSource = currenciesData.slice(0,i+1);
+    }
   }
 
 }
