@@ -87,4 +87,8 @@ export class CurrencyTableComponent implements OnInit {
     console.log("loaded 20 more");
     this._loading = false;
   }
+
+  sendToExchange(id: string){
+    console.log(id);
+  }
 }

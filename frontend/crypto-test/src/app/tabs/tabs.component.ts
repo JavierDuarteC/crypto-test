@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TabsComponent implements OnInit {
   
+  selectedIndex = 0;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  goToExchange() {
+    this.selectedIndex = 0;
   }
 
 }

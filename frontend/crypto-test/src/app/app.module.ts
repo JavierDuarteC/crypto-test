@@ -9,13 +9,21 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CurrencyTableComponent } from './currency-table/currency-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { bncApiService } from './services/bnc.service';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { ExchangeFormComponent } from './exchange-form/exchange-form.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatGridListModule } from '@angular/material/grid-list';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     TabsComponent,
-    CurrencyTableComponent
+    CurrencyTableComponent,
+    ExchangeFormComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +33,13 @@ import {MatIconModule} from '@angular/material/icon';
     MatTabsModule,
     MatTableModule,
     MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatGridListModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     bncApiService
