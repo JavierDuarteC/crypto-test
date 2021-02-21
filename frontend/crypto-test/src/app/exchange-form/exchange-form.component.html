@@ -29,7 +29,7 @@
             </mat-select>
         </mat-form-field>
         <button mat-stroked-button color="success" (click)="calculate($event)">Convertir</button>
-        <mat-form-field appearance="outline">
+        <mat-form-field class="result" appearance="outline">
             <input matInput [formControl]="resultControl" placeholder="Resultado" readonly>
         </mat-form-field>
     </form>

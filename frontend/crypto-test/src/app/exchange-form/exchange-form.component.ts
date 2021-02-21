@@ -34,9 +34,15 @@ export class ExchangeFormComponent implements OnInit {
     event.preventDefault();
     console.log("calculate");
     this.quantityControl.markAsTouched();
-    var found1 = this.dataSource.find(element => element.symbol === this.selectedValueFrom) ?? new Currency();
-    var found2 = this.dataSource.find(element => element.symbol === this.selectedValueTo) ?? new Currency();
-    this.resultControl.setValue(this.quantityControl.value * found1.price / found2.price);
+    var quantity = this.quantityControl.value;
+    if (quantity > 0) {
+      var found1 = this.dataSource.find(element => element.symbol === this.selectedValueFrom) ?? new Currency();
+      var found2 = this.dataSource.find(element => element.symbol === this.selectedValueTo) ?? new Currency();
+      var result = quantity * found1.price / found2.price;
+      if (result > 0) {
+        this.resultControl.setValue(result);
+      }
+    }
   }
 
   shuffleInputs(event: any) {
