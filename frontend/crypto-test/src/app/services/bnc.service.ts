@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Currency } from '../classes/currency';
 
 @Injectable()
 export class bncApiService {
 
     token = "";
+    currencyList: Currency[] = [];
 
     constructor(private httpClient: HttpClient) {
     }
