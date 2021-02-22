@@ -1,4 +1,4 @@
 <mat-tab-group dynamicheight mat-align-tabs="center" [(selectedIndex)]="selectedIndex">
     <mat-tab label="REALIZAR CAMBIO"><app-exchange-form [receivedId]="message" [bncApiService]="_bncApiService"></app-exchange-form></mat-tab>
-    <mat-tab label="LISTADO DE MONEDAS"><app-currency-table (messageEvent)="receiveMessage($event)"></app-currency-table></mat-tab>
+    <mat-tab label="LISTADO DE MONEDAS"><app-currency-table (messageEvent)="receiveMessage($event)" #tab-button></app-currency-table></mat-tab>
 </mat-tab-group>

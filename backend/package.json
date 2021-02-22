@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node www/server",
     "dev": "nodemon www/server",
-    "test": "jest --watch"
+    "test": "jest"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

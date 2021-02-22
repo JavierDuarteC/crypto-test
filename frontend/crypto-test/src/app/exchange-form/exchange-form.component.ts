@@ -31,8 +31,10 @@ export class ExchangeFormComponent implements OnInit {
 
   @Input('bncApiService')
   set bncApiService(service: bncApiService) {
-    this._bncApiService = service;
-    this.currencyList = this._bncApiService.currencyList;
+    if(service){
+      this._bncApiService = service;
+      this.currencyList = this._bncApiService.currencyList;
+    }
   }
 
   get bncApiService(): bncApiService { return this._bncApiService; }

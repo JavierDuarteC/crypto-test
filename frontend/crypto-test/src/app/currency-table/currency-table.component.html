@@ -1,5 +1,5 @@
 <div class="table-container" (scroll)="onTableScroll($event)">
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table [dataSource]="dataSource" #table>
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Nombre </th>
             <td mat-cell *matCellDef="let element"> {{element.name}} ({{element.symbol}}) </td>
