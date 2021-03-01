@@ -22,9 +22,9 @@ steps:
 
 - script: |
     cd backend
-    npm install --only=dev
+    npm install
     npm run test
-  displayName: 'npm install dev and test'
+  displayName: 'npm install and test'
 
 - task: PublishCodeCoverageResults@1
   inputs:
