@@ -4,7 +4,4 @@ module.exports = {
             await callback(array[index], index, array);
         }
     },
-    isNumeric: function (id) {
-        return typeof id === 'number';
-    },
 }

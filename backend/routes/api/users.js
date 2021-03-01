@@ -2,7 +2,8 @@ const router = require('express').Router()
 const User = require('../../controllers/usersController')
 const Crypto = require('../../controllers/cryptoController');
 const CryptoUser = require('../../controllers/cryptoUserController');
-const Utils = require('../../configs/utils');
+const varType = require('../../utils/varType');
+const asyncFor = require('../../utils/asyncFor');
 
 router.route('/me').get((req, res) => {
     var token = req.headers.authorization.split(" ")[1];
@@ -74,7 +75,7 @@ router.route('/mycrypto').get((req, res) => {
 
                     var cryptos = [];
                     try {
-                        await Utils.asyncForEach(cryptoUsers, async (cryptoUser) => {
+                        await asyncFor.asyncForEach(cryptoUsers, async (cryptoUser) => {
                             try {
                                 var crypto = await Crypto.findOne({
                                     id: cryptoUser.cryptoId
@@ -138,14 +139,14 @@ router.route('/add').post((req, res) => {
             success: false,
             message: 'Error: crypto ID cannot be blank.'
         })
-    } else if (!Utils.isNumeric(id)) {
+    } else if (!varType.isNumeric(id)) {
         return res.status(400).json({
             success: false,
             message: 'Error: Crypto ID has to be numeric.'
         })
     }
     if (quantity) {
-        if (!Utils.isNumeric(quantity)) {
+        if (!varType.isNumeric(quantity)) {
             return res.status(400).json({
                 success: false,
                 message: 'Error: Quantity has to be numeric.'
@@ -278,7 +279,7 @@ router.route('/:user').get((req, res) => {
 
                                     var cryptos = [];
                                     try {
-                                        await Utils.asyncForEach(cryptoUsers, async (cryptoUser) => {
+                                        await asyncFor.asyncForEach(cryptoUsers, async (cryptoUser) => {
                                             try {
                                                 var crypto = await Crypto.findOne({
                                                     id: cryptoUser.cryptoId

@@ -2,7 +2,8 @@ const router = require('express').Router();
 const User = require('../../controllers/usersController');
 const Crypto = require('../../controllers/cryptoController');
 const CryptoUser = require('../../controllers/cryptoUserController');
-const Utils = require('../../configs/utils');
+const validator = require('../../utils/validator');
+const varType = require('../../utils/varType');
 const jwt = require('jsonwebtoken');
 const config = require('../../configs/config');
 
@@ -23,7 +24,7 @@ router.route('/signup').post((req, res) => {
         });
     }
     if (password) {
-        if (!password.match(/^(?=.*[0-9])(?=.*[a-z])([a-zA-Z0-9]{8,})$/)) {
+        if (!validator.passwordIsValid(password)) {
             return res.send({
                 success: false,
                 message: 'Error: Password has to contain at least 8 characters and at least 1 number.'
@@ -54,7 +55,7 @@ router.route('/signup').post((req, res) => {
         });
     }
     //Verify user's fav_crypto
-    if (!Utils.isNumeric(fav_crypto)) {
+    if (!varType.isNumeric(fav_crypto)) {
         return res.send({
             success: false,
             message: 'Error: Favorite cryptocurrency should be numeric.'
