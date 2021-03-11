@@ -5,7 +5,7 @@ describe('GetExchangeValueFromListCase', () => {
 	beforeAll(async () => { });
 	beforeEach(async () => { });
 
-	it('should do something', async () => {
+	it('should get the exchange currency from a table', async () => {
 		await browser.get('http://localhost:4200/');
 		const el_2 = element(by.xpath("//div[@id='mat-tab-label-0-1']/div"));
 		await browser.wait(EC.elementToBeClickable(el_2));

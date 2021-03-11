@@ -1,4 +1,4 @@
-  
+
 
 // @ts-check
 // Protractor configuration file, see link for more information
@@ -12,7 +12,7 @@ const { SpecReporter, StacktraceOption } = require('jasmine-spec-reporter');
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    './ui/**/*.e2e-spec.ts'
+    './exchange/**/*.e2e-spec.ts'
   ],
   capabilities: {
     browserName: 'chrome'
@@ -24,9 +24,23 @@ exports.config = {
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 30000,
-    print: function() {}
+    print: function () { }
   },
   onPrepare() {
+    let HtmlReporter = require('protractor-beautiful-reporter');
+    jasmine.getEnv().addReporter(new HtmlReporter({
+      baseDirectory: 'reports_new',
+      screenshotsSubfolder: 'screenshotsOnFailure',
+      takeScreenShotsOnlyForFailedSpecs: true,
+      jsonsSubfolder: 'jsonFiles',
+      excludeSkippedSpecs: true,
+      preserveDirectory: false,
+      clientDefaults: {
+        showTotalDurationIn: "header",
+        totalDurationFormat: "h:m:s",
+        gatherBrowserLogs: true
+      },
+    }).getJasmine2Reporter());
     require('ts-node').register({
       project: require('path').join(__dirname, './tsconfig.json')
     });

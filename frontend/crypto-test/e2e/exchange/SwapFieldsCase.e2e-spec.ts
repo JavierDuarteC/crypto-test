@@ -5,7 +5,7 @@ describe('SwapFieldsCase', () => {
 	beforeAll(async () => { });
 	beforeEach(async () => { });
 
-	it('should do something', async () => {
+	it('should swap exchange currency', async () => {
 		await browser.get('http://localhost:4200/');
 
 
