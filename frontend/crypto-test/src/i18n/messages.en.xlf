@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="es" target-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="exchangeTabLable" datatype="html">
+        <source>REALIZAR CAMBIO</source>
+        <target>EXCHANGE</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tabs/tabs.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <note priority="1" from="description"> Exchange tab title</note>
+        <note priority="1" from="meaning">Exchange tab</note>
+      </trans-unit>
+      <trans-unit id="currencyTabLable" datatype="html">
+        <source>LISTADO DE MONEDAS</source>
+        <target>CURRENCY LIST</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/tabs/tabs.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description"> Crypto list tab title</note>
+        <note priority="1" from="meaning">List tab</note>
+      </trans-unit>
+      <trans-unit id="quantityInputLable" datatype="html">
+        <source>Cantidad</source>
+        <target>Quantity</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/exchange-form/exchange-form.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">Quantity field lable</note>
+        <note priority="1" from="meaning">Quantity field</note>
+      </trans-unit>
+      <trans-unit id="quantityInputPlaceholder" datatype="html">
+        <source>Cantidad</source>
+        <target>Quantity</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/exchange-form/exchange-form.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">Quantity field input placeholder</note>
+        <note priority="1" from="meaning">Quantity field placeholder</note>
+      </trans-unit>
+      <trans-unit id="quantityInputError" datatype="html">
+        <source> La cantidad debe ser mayor que cero </source>
+        <target> Quantity has to be greater than zero </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/exchange-form/exchange-form.component.html</context>
+          <context context-type="linenumber">11,12</context>
+        </context-group>
+        <note priority="1" from="description">Quantity field error message</note>
+        <note priority="1" from="meaning">Quantity field error</note>
+      </trans-unit>
+      <trans-unit id="currencyFromInputLable" datatype="html">
+        <source>De</source>
+        <target>From</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/exchange-form/exchange-form.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <note priority="1" from="description">Currency From field lable</note>
+        <note priority="1" from="meaning">Currency From</note>
+      </trans-unit>
+      <trans-unit id="currencyToInputLable" datatype="html">
+        <source>A</source>
+        <target>To</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/exchange-form/exchange-form.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <note priority="1" from="description">Currency To field lable</note>
+        <note priority="1" from="meaning">Currency To</note>
+      </trans-unit>
+      <trans-unit id="currencyExchangeButtonLable" datatype="html">
+        <source>Convertir</source>
+        <target>Convert</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/exchange-form/exchange-form.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+        <note priority="1" from="description">Currency Exchange button lable</note>
+        <note priority="1" from="meaning">Currency exchange button</note>
+      </trans-unit>
+      <trans-unit id="resultFieldLable" datatype="html">
+        <source>Resultado</source>
+        <target>Result</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/exchange-form/exchange-form.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+        <note priority="1" from="description">Result field lable</note>
+        <note priority="1" from="meaning">Result field</note>
+      </trans-unit>
+      <trans-unit id="resultFieldPlaceholder" datatype="html">
+        <source>Resultado</source>
+        <target>Result</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/exchange-form/exchange-form.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <note priority="1" from="description">Result field placeholder</note>
+        <note priority="1" from="meaning">Result placeholder</note>
+      </trans-unit>
+      <trans-unit id="nameTableHeader" datatype="html">
+        <source> Nombre </source>
+        <target> Name </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/currency-table/currency-table.component.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+        <note priority="1" from="description"> Currency column header name</note>
+        <note priority="1" from="meaning">Currency name column</note>
+      </trans-unit>
+      <trans-unit id="2374391988649952244" datatype="html">
+        <source> Precio </source>
+        <target> Price </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/currency-table/currency-table.component.html</context>
+          <context context-type="linenumber">15,16</context>
+        </context-group>
+        <note priority="1" from="description"> Currency column header price@priceTableHeader</note>
+        <note priority="1" from="meaning">Currency price column</note>
+      </trans-unit>
+      <trans-unit id="cryptoTableHeader" datatype="html">
+        <source> Criptomoneda </source>
+        <target> Cryptocurrency </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/currency-table/currency-table.component.html</context>
+          <context context-type="linenumber">24,25</context>
+        </context-group>
+        <note priority="1" from="description"> Currency column header crypto</note>
+        <note priority="1" from="meaning">Currency crypto column</note>
+      </trans-unit>
+      <trans-unit id="isCryptoTableValue" datatype="html">
+        <source> SI </source>
+        <target> YES </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/currency-table/currency-table.component.html</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+        <note priority="1" from="description"> isCurrency column value</note>
+        <note priority="1" from="meaning">isCrypto</note>
+      </trans-unit>
+      <trans-unit id="isNotCryptoTableValue" datatype="html">
+        <source> NO </source>
+        <target> NO </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/currency-table/currency-table.component.html</context>
+          <context context-type="linenumber">45,46</context>
+        </context-group>
+        <note priority="1" from="description"> isNotCurrency column value</note>
+        <note priority="1" from="meaning">isNotCrypto</note>
+      </trans-unit>
+      <trans-unit id="convertTableHeader" datatype="html">
+        <source> Convertir </source>
+        <target> Convert </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/currency-table/currency-table.component.html</context>
+          <context context-type="linenumber">55,56</context>
+        </context-group>
+        <note priority="1" from="description"> Currency column header convert</note>
+        <note priority="1" from="meaning">Currency convert column</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

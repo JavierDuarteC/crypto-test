@@ -2,15 +2,20 @@
     <p>{{message}}</p>
     <form>
         <mat-form-field appearance="outline">
-            <mat-label>Cantidad</mat-label>
-            <input matInput [formControl]="quantityControl" placeholder="Cantidad" type="number" required>
+            <mat-label><span i18n="Quantity field|Quantity field lable@@quantityInputLable">Cantidad</span></mat-label>
+            <input matInput [formControl]="quantityControl"
+                i18n-placeholder="Quantity field placeholder|Quantity field input placeholder@@quantityInputPlaceholder"
+                placeholder="Cantidad" type="number" required>
             <mat-error *ngIf="quantityControl.invalid">
-                La cantidad debe ser mayor que cero
+                <span i18n="Quantity field error|Quantity field error message@@quantityInputError">
+                    La cantidad debe ser mayor que cero
+                </span>
             </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-            <mat-label>De</mat-label>
-            <mat-select [(value)]="selectedValueFrom" name="food">
+            <mat-label><span i18n="Currency From|Currency From field lable@@currencyFromInputLable">De</span>
+            </mat-label>
+            <mat-select [(value)]="selectedValueFrom" name="currency1">
                 <mat-option *ngFor="let crypto of currencyList" [value]="crypto.symbol">
                     {{crypto.symbol}}
                 </mat-option>
@@ -22,16 +27,22 @@
             </mat-icon>
         </button>
         <mat-form-field appearance="outline">
-            <mat-label>A</mat-label>
-            <mat-select [(value)]="selectedValueTo" name="car">
+            <mat-label><span i18n="Currency To|Currency To field lable@@currencyToInputLable">A</span></mat-label>
+            <mat-select [(value)]="selectedValueTo" name="currency2">
                 <mat-option *ngFor="let crypto of currencyList" [value]="crypto.symbol">
                     {{crypto.symbol}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-stroked-button color="success" (click)="calculate($event)">Convertir</button>
+        <button mat-stroked-button color="success" (click)="calculate($event)">
+            <span
+                i18n="Currency exchange button|Currency Exchange button lable@@currencyExchangeButtonLable">Convertir</span>
+        </button>
         <mat-form-field class="result" appearance="outline">
-            <input matInput [formControl]="resultControl" placeholder="Resultado" readonly>
+            <mat-label><span i18n="Result field|Result field lable@@resultFieldLable">Resultado</span></mat-label>
+            <input matInput [formControl]="resultControl"
+                i18n-placeholder="Result placeholder|Result field placeholder@@resultFieldPlaceholder"
+                placeholder="Resultado" readonly>
         </mat-form-field>
     </form>
 </div>

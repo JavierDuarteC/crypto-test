@@ -19,11 +19,17 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale":"es",
+        "locales": {
+          "en": "src/i18n/messages.en.xlf"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/crypto-test",
+            "outputPath": "dist/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -40,6 +46,9 @@
             "scripts": []
           },
           "configurations": {
+            "en":{
+              "localize":["en"]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -77,6 +86,9 @@
           "configurations": {
             "production": {
               "browserTarget": "crypto-test:build:production"
+            },
+            "en":{
+              "browserTarget": "crypto-test:build:en"
             }
           }
         },

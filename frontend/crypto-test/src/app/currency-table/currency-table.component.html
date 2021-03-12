@@ -1,17 +1,29 @@
 <div class="table-container" (scroll)="onTableScroll($event)">
     <table mat-table [dataSource]="dataSource" #table>
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <th mat-header-cell *matHeaderCellDef>
+                <span i18n="Currency name column| Currency column header name@@nameTableHeader">
+                    Nombre
+                </span>
+            </th>
             <td mat-cell *matCellDef="let element"> {{element.name}} ({{element.symbol}}) </td>
         </ng-container>
 
         <ng-container matColumnDef="price">
-            <th mat-header-cell *matHeaderCellDef> Precio </th>
+            <th mat-header-cell *matHeaderCellDef>
+                <span i18n="Currency price column| Currency column header price@priceTableHeader">
+                    Precio
+                </span>
+            </th>
             <td mat-cell *matCellDef="let element" class="money">${{element.price}}</td>
         </ng-container>
 
         <ng-container matColumnDef="isCrypto">
-            <th mat-header-cell *matHeaderCellDef class="align-center">Criptomoneda</th>
+            <th mat-header-cell *matHeaderCellDef class="align-center">
+                <span i18n="Currency crypto column| Currency column header crypto@@cryptoTableHeader">
+                    Criptomoneda
+                </span>
+            </th>
             <td mat-cell *matCellDef="let element" class="align-center">
                 <div *ngIf="element.type==='CRYPTO'; then thenBlock else elseBlock"></div>
                 <ng-template #thenBlock>
@@ -19,7 +31,7 @@
                         <mat-icon aria-hidden="false" aria-label="Dot icon">
                             fiber_manual_record
                         </mat-icon>
-                        <span class="aligned-with-icon">
+                        <span class="aligned-with-icon" i18n="isCrypto| isCurrency column value@@isCryptoTableValue">
                             SI
                         </span>
                     </div>
@@ -29,7 +41,7 @@
                         <mat-icon aria-hidden="false" aria-label="Dot icon">
                             fiber_manual_record
                         </mat-icon>
-                        <span class="aligned-with-icon">
+                        <span class="aligned-with-icon" i18n="isNotCrypto| isNotCurrency column value@@isNotCryptoTableValue">
                             NO
                         </span>
                     </div>
@@ -38,7 +50,11 @@
         </ng-container>
 
         <ng-container matColumnDef="convert">
-            <th mat-header-cell *matHeaderCellDef class="align-center"> Convertir </th>
+            <th mat-header-cell *matHeaderCellDef class="align-center">
+                <span i18n="Currency convert column| Currency column header convert@@convertTableHeader">
+                    Convertir
+                </span>
+            </th>
             <td mat-cell *matCellDef="let element" class="align-center">
                 <div *ngIf="element.type==='CRYPTO'; then thenBlock else elseBlock"></div>
                 <ng-template #thenBlock>
