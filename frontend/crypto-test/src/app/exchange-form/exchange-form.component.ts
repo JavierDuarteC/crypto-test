@@ -48,8 +48,7 @@ export class ExchangeFormComponent implements OnInit {
     this.selectedValueTo = "BTC";
   }
 
-  async calculate(event: any) {
-    event.preventDefault();
+  async calculate() {
     console.log("calculate");
     console.log(this.currencyList.length);
     this.quantityControl.markAsTouched();
@@ -70,6 +69,8 @@ export class ExchangeFormComponent implements OnInit {
         this.message = found2.symbol + " no tiene un precio establecido en BraveNewCoin."
       }else{
         var result = quantity * found1.price / found2.price;
+        console.log(found1.price);
+        console.log(found2.price);
         if (result > 0) {
           this.resultControl.setValue(result);
         }
@@ -77,8 +78,7 @@ export class ExchangeFormComponent implements OnInit {
     }
   }
 
-  shuffleInputs(event: any) {
-    event.preventDefault();
+  shuffleInputs() {
     console.log("shuffle inputs");
     var temp = this.selectedValueFrom;
     this.selectedValueFrom = this.selectedValueTo;
