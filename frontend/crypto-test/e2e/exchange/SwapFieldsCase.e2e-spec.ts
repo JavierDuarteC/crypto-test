@@ -17,7 +17,7 @@ describe('SwapFieldsCase', () => {
 
 	// WARNING: unsupported command storeText. Object= {"command":"storeText","target":"//div[@id='mat-select-value-1']/span/span","value":"selected1"}
 
-		await element(by.xpath("//mat-select[@id='mat-select-2']/div/div[2]")).click();
+		await element(by.xpath("//mat-select[@id='mat-select-2']/div")).click();
 		await element(by.xpath("//mat-option[@id='mat-option-1890']/span")).click();
 
 		var selected1 = await element(by.xpath("//div[@id='mat-select-value-1']/span/span")).getText();
@@ -27,11 +27,11 @@ describe('SwapFieldsCase', () => {
 		await browser.sleep(1000);
 		expect(await element(by.xpath("//div[@id='mat-select-value-1']/span/span")).getText()).toContain(`${selected1}`);
 		expect(await element(by.xpath("//div[@id='mat-select-value-3']/span/span")).getText()).toContain(`${selected2}`);
-		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-0']/div/app-exchange-form/div/form/button/span/mat-icon")).click();
+		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-0']/div/app-exchange-form/button")).click();
 		await browser.sleep(1000);
 		expect(await element(by.xpath("//div[@id='mat-select-value-1']/span/span")).getText()).toContain(`${selected2}`);
 		expect(await element(by.xpath("//div[@id='mat-select-value-3']/span/span")).getText()).toContain(`${selected1}`);
-		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-0']/div/app-exchange-form/div/form/button/span/mat-icon")).click();
+		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-0']/div/app-exchange-form/button")).click();
 		await browser.sleep(2000);
 		expect(await element(by.xpath("//div[@id='mat-select-value-1']/span/span")).getText()).toContain(`${selected1}`);
 		expect(await element(by.xpath("//div[@id='mat-select-value-3']/span/span")).getText()).toContain(`${selected2}`);

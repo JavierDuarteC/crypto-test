@@ -11,13 +11,13 @@ describe('GetExchangeValueFromListCase', () => {
 		await browser.wait(EC.elementToBeClickable(el_2));
 		await el_2.click();
 		await browser.sleep(2000);
-		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-1']/div/app-currency-table/div/table/tbody/tr[3]/td[4]/button/span/mat-icon")).click();
+		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-1']/div/app-currency-table/div/table/tbody/tr[3]/td[4]/button")).click();
 		await browser.sleep(2000);
-		await element(by.xpath("//mat-select[@id='mat-select-2']/div/div[2]/div")).click();
+		await element(by.xpath("//mat-select[@id='mat-select-2']/div")).click();
 		await element(by.xpath("//mat-option[@id='mat-option-1889']/span")).click();
 		await element(by.id("mat-input-0")).click();
 		await element(by.id("mat-input-0")).sendKeys('1');
-		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-0']/div/app-exchange-form/div/form/button[2]/span")).click();
+		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-0']/div/app-exchange-form/div/form/button")).click();
 		await browser.sleep(1000);
 		expect(Number(await element(by.id("mat-input-1")).getAttribute('value'))).toBeGreaterThan(0);
 

@@ -5,7 +5,7 @@ describe('ExchangeEmptyFieldCase', () => {
 	beforeAll(async () => { });
 	beforeEach(async () => { });
 
-	it('should evoid exchange cryptocurrency', async () => {
+	it('should avoid exchange cryptocurrency', async () => {
 		await browser.get('http://localhost:4200/');
 
 
@@ -13,10 +13,11 @@ describe('ExchangeEmptyFieldCase', () => {
 
 		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-0']/div/app-exchange-form/div/form/mat-form-field[2]/div/div/div[3]")).click();
 		await element(by.xpath("//mat-option[@id='mat-option-2']/span")).click();
-		await element(by.xpath("//mat-select[@id='mat-select-2']/div/div[2]")).click();
+		await element(by.xpath("//mat-select[@id='mat-select-2']/div")).click();
 		await element(by.xpath("//mat-option[@id='mat-option-1892']/span")).click();
-		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-0']/div/app-exchange-form/div/form/button[2]/span")).click();
-
+		await browser.sleep(1000);
+		await element(by.xpath("//mat-tab-body[@id='mat-tab-content-0-0']/div/app-exchange-form/div/form/button")).click();
+		await browser.sleep(1000);
 
 	// WARNING: unsupported command assertTextNotPresent. Object= {"command":"assertTextNotPresent","target":"id=mat-input-1","value":"Resultado"}
 

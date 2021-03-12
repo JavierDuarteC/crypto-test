@@ -1,4 +1,7 @@
 <div class="input-container">
+    <span class="exchange-header" i18n="Exchange Header|Exchange header text@@exchangeHeaderText">
+        Seleccione las monedas
+    </span>
     <p>{{message}}</p>
     <form>
         <mat-form-field appearance="outline">
@@ -21,11 +24,6 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-icon-button aria-label="shuffle inputs" (click)="shuffleInputs($event)">
-            <mat-icon aria-hidden="false" aria-label="shuffle icon">
-                shuffle
-            </mat-icon>
-        </button>
         <mat-form-field appearance="outline">
             <mat-label><span i18n="Currency To|Currency To field lable@@currencyToInputLable">A</span></mat-label>
             <mat-select [(value)]="selectedValueTo" name="currency2">
@@ -46,3 +44,6 @@
         </mat-form-field>
     </form>
 </div>
+<button mat-icon-button aria-label="shuffle inputs" (click)="shuffleInputs($event)">
+    <img class="png-icon" src="assets/exchange.png">
+</button>

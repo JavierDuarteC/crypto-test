@@ -87,7 +87,7 @@ export class ExchangeFormComponent implements OnInit {
 
   setIncomingField(id: string) {
     var found = this.currencyList.find(element => element.id === id) ?? new Currency();
-    this.selectedValueFrom = found.symbol;
+    this.selectedValueTo = found.symbol;
   }
 
   async getPrice(id: string): Promise<number> {
